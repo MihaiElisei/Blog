@@ -1,8 +1,13 @@
 package com.itschool.blog.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data // Generates getters and setters
+// Generates getters and setters
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostDTO {
 
     private Long id;

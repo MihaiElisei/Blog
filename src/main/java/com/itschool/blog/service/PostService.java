@@ -1,15 +1,17 @@
 package com.itschool.blog.service;
 
-import com.itschool.blog.entity.Post;
+
 import com.itschool.blog.model.PostDTO;
+import com.itschool.blog.model.PostResponse;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
 
+@Service
 public interface PostService {
 
     PostDTO createPost(PostDTO postDTO);
 
-    List<PostDTO> getAllPosts();
+    PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
 
     PostDTO getPostById(Long id);
 
