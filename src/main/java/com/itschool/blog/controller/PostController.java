@@ -8,6 +8,7 @@ import com.itschool.blog.utils.Constants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,6 +23,7 @@ public class PostController {
     }
 
     // create blog post rest api
+    @PreAuthorize("hasRole('ADMIN')") //Add Posts only by admins
     @PostMapping
     public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO){
         return new ResponseEntity<>(postService.createPost(postDTO), HttpStatus.CREATED);
@@ -46,6 +48,7 @@ public class PostController {
     }
 
     // update post by id rest api
+    @PreAuthorize("hasRole('ADMIN')") //Update Posts only by admins
     @PutMapping("/{id}")
     public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDto, @PathVariable(name = "id") long id){
 
@@ -55,6 +58,7 @@ public class PostController {
     }
 
     // delete post rest api
+    @PreAuthorize("hasRole('ADMIN')") //Delete Posts only by admins
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id){
 
