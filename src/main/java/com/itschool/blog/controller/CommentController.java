@@ -2,6 +2,7 @@ package com.itschool.blog.controller;
 
 import com.itschool.blog.model.CommentDTO;
 import com.itschool.blog.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class CommentController {
 
     //Create comment to a post based by post ID
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<CommentDTO> createComment(@PathVariable(value = "postId") Long postId,@RequestBody CommentDTO commentDTO) { // @RequestBody annotation needed because the request body is a JSON object that holds another JSON object
+    public ResponseEntity<CommentDTO> createComment( @PathVariable(value = "postId") Long postId,@Valid @RequestBody CommentDTO commentDTO) { // @RequestBody annotation needed because the request body is a JSON object that holds another JSON object
         return new ResponseEntity<>(commentService.addComment(postId, commentDTO), HttpStatus.CREATED);
     }
 
@@ -41,7 +42,7 @@ public class CommentController {
     @PutMapping("/posts/{postId}/comments/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable(value = "postId")Long postId,
                                                     @PathVariable(value = "commentId") Long commentId,
-                                                    @RequestBody CommentDTO commentDTO){
+                                                    @Valid @RequestBody CommentDTO commentDTO){
         CommentDTO updateComment = commentService.updateComment(postId, commentId, commentDTO);
 
         return new ResponseEntity<>(updateComment, HttpStatus.OK);
