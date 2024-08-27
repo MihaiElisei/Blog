@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-// Generates getters and setters
+// Generates getters and setters with lombok annotation
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

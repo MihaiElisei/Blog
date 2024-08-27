@@ -6,6 +6,7 @@ import com.itschool.blog.model.PostDTO;
 import com.itschool.blog.model.PostResponse;
 import com.itschool.blog.repository.PostRepository;
 import com.itschool.blog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +19,17 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements PostService {
 
+    // Inject post repository and modelMapper
     private final PostRepository postRepository;
+    private final ModelMapper modelMapper;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
     }
 
+
+    //Create a new post
     @Override
     public PostDTO createPost(PostDTO postDTO) {
 
@@ -64,12 +70,14 @@ public class PostServiceImpl implements PostService {
         return postResponse;
     }
 
+    //Get post by ID or threw an error if post does not exist
     @Override
     public PostDTO getPostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         return mapToDTO(post);
     }
 
+    //Update a existing post or threw an error if post does not exist
     @Override
     public PostDTO updatePost(PostDTO postDTO, Long id) {
         // get post by id from db and if it doesn't exist throw an exception
@@ -85,29 +93,22 @@ public class PostServiceImpl implements PostService {
         return mapToDTO(updatedPost);
     }
 
-    // Delete post by ID
+    // Delete post by ID or threw an error if post does not exist
     @Override
     public void deletePostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         postRepository.delete(post);
     }
 
-    // convert entity into DTO
+    // convert entity into DTO using model mapper
     private PostDTO mapToDTO(Post post) {
-        PostDTO postDTO = new PostDTO();
-        postDTO.setId(post.getId());
-        postDTO.setTitle(post.getTitle());
-        postDTO.setDescription(post.getDescription());
-        postDTO.setContent(post.getContent());
+       PostDTO postDTO = modelMapper.map(post, PostDTO.class); // Map PostDTO object in the Post Object
         return postDTO;
     }
 
-    // convert DTO to entity
+    // convert DTO to entity using model mapper
     private Post mapToEntity(PostDTO postDTO) {
-        Post post = new Post();
-        post.setTitle(postDTO.getTitle());
-        post.setDescription(postDTO.getDescription());
-        post.setContent(postDTO.getContent());
+        Post post = modelMapper.map(postDTO, Post.class); // Map Post object in the PostDTO Object
         return post;
     }
 }

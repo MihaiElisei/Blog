@@ -2,14 +2,13 @@ package com.itschool.blog.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter //Generate Getters
+@Setter //Generate Setters
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity // Annotation to tell Hibernate that this class is an entity and should be persisted in the database
